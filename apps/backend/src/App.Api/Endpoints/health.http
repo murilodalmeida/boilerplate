@@ -1,0 +1,8 @@
+@baseUrl = https://localhost:5001/health
+@timeout = 10000
+
+### liveness
+GET {{baseUrl}}/live
+
+### readiness
+GET {{baseUrl}}/ready
