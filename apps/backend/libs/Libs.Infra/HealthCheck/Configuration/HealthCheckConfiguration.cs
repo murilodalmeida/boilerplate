@@ -1,11 +1,11 @@
 using System;
 using FwksLabs.Libs.Core.Constants;
 using FwksLabs.Libs.Core.Extensions;
-using FwksLabs.Libs.Infra.Databases.LiteDb;
-using FwksLabs.Libs.Infra.Databases.MongoDb;
-using FwksLabs.Libs.Infra.Databases.Postgres;
 using FwksLabs.Libs.Infra.HealthCheck.Extensions;
 using FwksLabs.Libs.Infra.HealthCheck.Options;
+using FwksLabs.Libs.Infra.LiteDb.HealthCheck;
+using FwksLabs.Libs.Infra.MongoDb.HealthCheck;
+using FwksLabs.Libs.Infra.Postgres.HealthCheck;
 using Humanizer;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +37,7 @@ public static class HealthCheckConfiguration
     public static IServiceCollection AddLiteDbHealthCheck(this IServiceCollection services, HealthCheckDependencyOptions options)
     {
         return services
-            .AddKeyedSingleton<ILiteDatabase>(nameof(LiteDbHealthCheck), new LiteDatabase(options.Target))
+            .AddKeyedSingleton(nameof(LiteDbHealthCheck), new LiteDatabase(options.Target))
             .AddHealthChecks()
             .AddDatabaseCheck<LiteDbHealthCheck>(options.Name.IfEmpty("litedb"), options.FailureStatus, options.TimeoutInSeconds, GetTags(options))
             .Services;

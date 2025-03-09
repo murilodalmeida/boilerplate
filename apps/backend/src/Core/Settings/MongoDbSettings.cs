@@ -5,4 +5,5 @@ namespace FwksLabs.Boilerplate.Core.Settings;
 public sealed record MongoDbSettings : IConnectionStringOptions
 {
     public required string ConnectionString { get; set; }
+    public required string Database { get; set; }
 }

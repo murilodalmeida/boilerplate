@@ -6,7 +6,7 @@ using FwksLabs.Libs.Core.Contracts.Common;
 
 namespace FwksLabs.Boilerplate.Core.Entities;
 
-public sealed class PostEntity : Entity<Guid>
+public sealed class PostEntity : BaseEntity<Guid>
 {
     public required AuthorValueObject Author { get; set; }
     public PostModerationStatus ModerationStatus { get; set; }

@@ -19,19 +19,6 @@ Content-Type: application/json
 }
 
 ### Get Post and comments
-GET {{baseUrl}}/{{postId}}
+GET {{baseUrl}}
 X-Correlation-Id: {{correlationId}}
 Content-Type: application/json
-
-### Add a Comment to a Post
-POST {{baseUrl}}/{{postId}}/comment
-X-Correlation-Id: {{correlationId}}
-Content-Type: application/json
-
-{
-  "content": "Great article! Thanks for sharing.",
-  "author": {
-    "name": "Bob Smith",
-    "email": "bob.smith@example.com"
-  }
-}

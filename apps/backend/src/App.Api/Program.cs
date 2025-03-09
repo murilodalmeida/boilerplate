@@ -1,14 +1,13 @@
 using System;
 using System.Linq;
 using FluentValidation;
-using FwksLabs.Boilerplate.App.Api.Configuration;
+using FwksLabs.Boilerplate.App.Api.Abstractions.Endpoints;
 using FwksLabs.Boilerplate.Core.Abstractions;
 using FwksLabs.Boilerplate.Core.Settings;
 using FwksLabs.Boilerplate.Infra;
-using FwksLabs.Libs.AspNetCore.Abstractions;
 using FwksLabs.Libs.AspNetCore.Configuration;
+using FwksLabs.Libs.AspNetCore.Extensions;
 using FwksLabs.Libs.AspNetCore.Options;
-using FwksLabs.Libs.Core.Constants;
 using FwksLabs.Libs.Core.Extensions;
 using FwksLabs.Libs.Infra.HealthCheck.Configuration;
 using FwksLabs.Libs.Infra.HealthCheck.Options;
@@ -22,8 +21,10 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
+using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Core;
+
 
 try
 {
@@ -33,7 +34,7 @@ try
 
     ConfigureLogger();
     ConfigureCorsPolicies();
-    ConfigureValidators();
+    ConfigureFluentValidation();
     ConfigureTelemetry();
     ConfigureHealthCheck();
 
@@ -52,7 +53,7 @@ try
     var app = builder.Build();
 
     if (appSettings.IsDevelopment)
-        app.MapOpenApi(appSettings);
+        ConfigureScalar();
 
     app
         .UseCorrelationId()
@@ -63,7 +64,7 @@ try
         .UseExceptionHandlerService()
         .UseHealthCheckEndpoints();
 
-    app.MapEndpoints();
+    ConfigureEndpoints();
 
     Log.Logger.Information("Starting the application");
 
@@ -121,11 +122,13 @@ try
         builder.Services.AddCorsPolicies([.. policies]);
     }
 
-    void ConfigureValidators()
+    void ConfigureFluentValidation()
     {
+        ValidatorOptions.Global.LanguageManager.Culture = new(appSettings.Localization.DefaultCulture);
+
         builder.Services
-            .AddValidatorsFromAssembly(typeof(ICore).Assembly)
-            .AddValidatorsFromAssembly(typeof(IEndpointValidator).Assembly);
+            .AddValidatorsFromAssembly(typeof(Program).Assembly)
+            .AddValidatorsFromAssembly(typeof(ICore).Assembly);
     }
 
     void ConfigureTelemetry()
@@ -189,6 +192,18 @@ try
                     Tags = []
                 });
         }
+    }
+
+    void ConfigureScalar()
+    {
+        app.MapOpenApi();
+        app.MapScalarApiReference();
+    }
+
+    void ConfigureEndpoints()
+    {
+        app.MapEndpoints<IPostEndpoint>("posts");
+        app.MapEndpoints<ICommentEndpoint>("comments");
     }
 }
 catch (Exception ex)

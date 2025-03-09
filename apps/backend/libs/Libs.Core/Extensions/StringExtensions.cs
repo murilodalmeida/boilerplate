@@ -1,4 +1,5 @@
 using System;
+using Humanizer;
 
 namespace FwksLabs.Libs.Core.Extensions;
 
@@ -12,4 +13,7 @@ public static class StringExtensions
 
     public static bool EqualsTo(this string? value, string target) =>
         string.Equals(value, target, StringComparison.InvariantCultureIgnoreCase);
+
+    public static string PluralizeEntity(this string name) =>
+        name[..^"Entity".Length].Pluralize();
 }

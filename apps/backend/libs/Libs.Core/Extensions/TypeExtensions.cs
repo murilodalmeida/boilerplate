@@ -12,4 +12,13 @@ public static class TypeExtensions
             .Where(t => typeof(TBase).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
             .Select(Activator.CreateInstance)
             .Cast<TCast>()];
+
+    public static void ConfigureFromType<T>(this Type type)
+    {
+        _ = type.Assembly
+            .GetTypes()
+            .Where(x => x.IsAssignableTo(typeof(T)))
+            .Select(Activator.CreateInstance);
+    }
+
 }

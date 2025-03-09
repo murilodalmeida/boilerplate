@@ -1,0 +1,16 @@
+﻿using FwksLabs.Boilerplate.Core.Entities;
+using FwksLabs.Libs.Infra.LiteDb.Abstractions;
+using FwksLabs.Libs.Infra.LiteDb.Configuration;
+using LiteDB;
+
+namespace FwksLabs.Boilerplate.Infra.LiteDb.EntityConfiguration;
+
+public sealed class PostEntityConfiguration : BaseEntityConfiguration<PostEntity>, ITypeConfiguration
+{
+    public override void Extend(EntityBuilder<PostEntity> mapper)
+    {
+        mapper
+            .Ignore(x => x.Id)
+            .Ignore(x => x.Comments);
+    }
+}

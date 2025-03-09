@@ -1,9 +1,19 @@
-﻿using FwksLabs.Boilerplate.Infra.Postgres.Abstractions;
+﻿using FwksLabs.Boilerplate.Core.Entities;
+using FwksLabs.Boilerplate.Infra.Abstractions;
+using FwksLabs.Boilerplate.Infra.Postgres.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace FwksLabs.Boilerplate.Infra.Postgres;
 
-public sealed class DatabaseContext : DbContext, IDatabaseContext
+public sealed class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options), IDatabaseContext
 {
+    public DbSet<PostEntity> Posts { get; set; }
+    public DbSet<CommentEntity> Comments { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IInfra).Assembly);
+    }
 }

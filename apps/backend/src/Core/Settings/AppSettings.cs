@@ -9,8 +9,9 @@ public sealed record AppSettings
     public required MongoDbSettings MongoDb { get; set; }
     public ObservabilitySettings Observability { get; set; } = new();
     public required PostgresSettings Postgres { get; set; }
+    public required RedisSettings Redis { get; set; }
     public SecuritySettings Security { get; set; } = new();
-    public required ServiceInfoSettings ServiceInfo { get; set; }    
+    public required ServiceInfoSettings ServiceInfo { get; set; }
     public Dictionary<string, HttpServiceDependencySettings> Services { get; set; } = [];
 
     public bool IsDevelopment { get; set; }
