@@ -11,6 +11,7 @@ public static class AppResponses
     public static IResult Ok() => TypedResults.Ok();
     public static IResult Ok<T>(T? value) => TypedResults.Ok(value);
     public static IResult Created<T>(T value) => TypedResults.Created(string.Empty, value);
+    public static IResult Created<T>(string route, T value) => TypedResults.Created(route, value);
     public static IResult NoContent() => TypedResults.NoContent();
 
     // 4XX

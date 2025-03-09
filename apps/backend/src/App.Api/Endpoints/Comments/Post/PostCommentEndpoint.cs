@@ -1,30 +1,44 @@
-﻿//using System;
-//using System.Threading.Tasks;
-//using FwksLabs.Boilerplate.App.Api.Abstractions.Endpoints;
-//using FwksLabs.Boilerplate.Core.ValueObjects;
-//using Microsoft.AspNetCore.Builder;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Routing;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FluentValidation;
+using FwksLabs.Boilerplate.App.Api.Abstractions.Endpoints;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using ILiteContext = FwksLabs.Boilerplate.Infra.LiteDb.Abstractions.IDatabaseContext;
+using IMongoContext = FwksLabs.Boilerplate.Infra.MongoDb.Abstractions.IDatabaseContext;
+using IPostgresContext = FwksLabs.Boilerplate.Infra.Postgres.Abstractions.IDatabaseContext;
 
-//namespace FwksLabs.Boilerplate.App.Api.Endpoints.Comments.Post;
+namespace FwksLabs.Boilerplate.App.Api.Endpoints.Comments.Post;
 
-//internal sealed class PostCommentEndpoint : IPostEndpoint
-//{
-//    record AddCommentRequest(string Content, AuthorValueObject Author);
-//    record CommentResponse(string Id);
+internal sealed class PostCommentEndpoint : ICommentEndpoint
+{
+    public void Map(IEndpointRouteBuilder builder) => builder
+        .MapPost(string.Empty, HandleAsync)
+        .MapToApiVersion(1)
+        .Produces<PostCommentResponse>(StatusCodes.Status201Created);
 
-//    public void Map(IEndpointRouteBuilder builder) => builder
-//        .MapPost("{id}/comment", HandleAsync)
-//        .MapToApiVersion(1)
-//        .Produces<CommentResponse>(StatusCodes.Status201Created)
-//        .ProducesProblem(StatusCodes.Status404NotFound);
+    private async Task<IResult> HandleAsync(
+        [FromServices] ILiteContext liteContext,
+        [FromServices] IMongoContext mongoContext,
+        [FromServices] IPostgresContext postgresContext,
+        [FromServices] IValidator<PostCommentRequest> validator,
+        [FromBody] PostCommentRequest request,
+        CancellationToken cancellationToken)
+    {
+        var comment = request.ToEntity();
 
-//    private async Task<IResult> HandleAsync([FromRoute] string id, AddCommentRequest request)
-//    {
-//        await Task.Yield();
+        // mongo
+        await mongoContext.Comments.InsertOneAsync(comment, null, cancellationToken);
 
-//        var commentId = Guid.NewGuid().ToString();
-//        return Results.Created($"/comments/{commentId}", new CommentResponse(commentId));
-//    }
-//}
+        // postgres
+        await postgresContext.Comments.AddAsync(comment, cancellationToken);
+        await postgresContext.SaveChangesAsync(cancellationToken);
+
+        // lite
+        liteContext.Comments.Insert(comment);
+
+        return PostCommentResponse.From(comment);
+    }
+}

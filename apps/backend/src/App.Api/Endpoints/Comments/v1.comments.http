@@ -2,14 +2,19 @@
 @correlationId = {{$guid}}
 @timeout = 10000
 
-@commentId = {{$guid}}
+@postId = 01957c08-e00d-728e-9bec-51edfda65e7d
+@commentId = 01957c06-96e6-7544-b6b6-456d6e3377e7
 
 ### Update Comment Status
-PATCH {{baseUrl}}/{{commentId}}/status
+POST {{baseUrl}}
+X-Correlation-Id: {{correlationId}}
 Content-Type: application/json
 
 {
-  "status": "Approved"
+  "postId": "{{postId}}",
+  "content": "This post doesn't explain anything, it is horrible.",
+  "authorName": "Alice Johnson",
+  "authorEmail": "alice.johnson@example.com"
 }
 
 ### Delete a Comment

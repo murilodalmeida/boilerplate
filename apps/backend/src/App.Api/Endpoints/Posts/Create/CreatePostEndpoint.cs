@@ -26,7 +26,6 @@ public sealed class CreatePostEndpoint : IPostEndpoint
         [FromServices] IPostgresContext postgresContext,
         [FromServices] IValidator<CreatePostRequest> validator,
         [FromBody] CreatePostRequest request,
-        HttpContext context,
         CancellationToken cancellationToken)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);

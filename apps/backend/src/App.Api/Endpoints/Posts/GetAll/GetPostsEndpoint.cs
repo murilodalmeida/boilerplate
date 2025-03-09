@@ -27,7 +27,6 @@ public sealed class GetPostsEndpoint : IPostEndpoint
         [FromServices] ILiteContext liteContext,
         [FromServices] IMongoContext mongoContext,
         [FromServices] IPostgresContext postgresContext,
-        HttpContext context,
         CancellationToken cancellationToken)
     {
         // lite
@@ -37,7 +36,7 @@ public sealed class GetPostsEndpoint : IPostEndpoint
         var mongo = Transform(await mongoContext.Posts.Find(_ => true).ToListAsync(cancellationToken));
 
         // postgres
-        var postgres = Transform(await postgresContext.Posts.AsNoTracking().ToListAsync(cancellationToken));
+        var postgres = Transform(await postgresContext.Posts.Include(x => x.Comments).AsNoTracking().ToListAsync(cancellationToken));
 
         return GetPostsResponse.From(new()
         {

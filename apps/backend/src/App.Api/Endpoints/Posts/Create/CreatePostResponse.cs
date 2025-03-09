@@ -8,5 +8,5 @@ namespace FwksLabs.Boilerplate.App.Api.Endpoints.Posts.Create;
 public sealed record CreatePostResponse(Guid Id)
 {
     public static IResult From(PostEntity post) =>
-        AppResponses.Ok(new CreatePostResponse(post.Id));
+        AppResponses.Created($"/posts/{post.Id}", new CreatePostResponse(post.Id));
 }

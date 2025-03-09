@@ -1,21 +1,19 @@
+SOLUTION_NAME=Boilerplate.sln
 INFRA_PROJECT="apps/backend/tools/Migrations/Migrations.csproj"
 MIGRATIONS_DIR="History"
+CONNECTION_STRING="Host=localhost;Port=5432;Username=local;Password=local;Database=Boilerplate;"
 
 ## General
 
 format:
-	dotnet format ./apps/backend/Boilerplate.sln
+	dotnet format ./apps/backend/$(SOLUTION_NAME)
 
 ## EF Helpers
 
-CONNECTION_STRING="Host=localhost;Port=5432;Username=local;Password=local;Database=Boilerplate;"
-
 db-add:
-	@echo "Adding migration: $${name:-InitDatabase}"
 	dotnet ef migrations add $${name:-InitDatabase} --project $(INFRA_PROJECT) -o $(MIGRATIONS_DIR) -- $(CONNECTION_STRING)
 
 db-remove:
-	@echo "Removing last migration or: $${name:-latest}"
 	dotnet ef migrations remove --project $(INFRA_PROJECT) -- $(CONNECTION_STRING)
 
 db-script:
