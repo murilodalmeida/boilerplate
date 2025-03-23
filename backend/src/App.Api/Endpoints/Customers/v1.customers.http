@@ -1,0 +1,22 @@
+@baseUrl = https://localhost:5001/v1/customers
+@correlationId = {{$guid}}
+@id = ITkLfGqNLei4dh0kwP5qv
+
+### Creates a Customer
+POST {{baseUrl}} HTTP/1.1
+X-Correlation-Id: {{correlationId}}
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "phoneNumber": "+1123456789",
+  "email": "john@doe.com"
+}
+
+### Get Customer by Id
+GET {{baseUrl}}/{{id}} HTTP/1.1
+X-Correlation-Id: {{correlationId}}
+
+### Get All Customers
+GET {{baseUrl}}?pageSize=-1 HTTP/1.1
+X-Correlation-Id: {{correlationId}}
