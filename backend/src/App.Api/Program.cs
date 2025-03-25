@@ -46,6 +46,7 @@ try
         .ConfigureResponseCompression();
 
     builder.Services
+        .AddAppContext()
         .AddOpenApi()
         .AddVersioning()
         .AddHttpClient()
@@ -79,9 +80,7 @@ try
 
         settings.IsDevelopment = builder.Environment.IsDevelopment();
 
-        builder.Services
-            .AddAppContext()
-            .AddSingleton(settings);
+        builder.Services.AddSingleton(settings);
 
         return settings;
     }

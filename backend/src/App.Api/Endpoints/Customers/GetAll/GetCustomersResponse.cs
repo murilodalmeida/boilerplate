@@ -15,7 +15,7 @@ public sealed record GetCustomersResponse(string Id, string Name, string? PhoneN
         var items = customers.Select(x => new GetCustomersResponse(x.Id.Encode(), x.Name, x.PhoneNumber, x.Email)).ToList();
 
         return AppResponses.Ok(
-            Page<GetCustomersResponse>.From(
+            PagedResponse<GetCustomersResponse>.From(
                 request.PageNumber, request.PageSize, items.Count, items));
     }
 }

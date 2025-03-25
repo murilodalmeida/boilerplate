@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FwksLabs.Boilerplate.App.Api.Abstractions.Endpoints;
 using FwksLabs.Boilerplate.Infra.MongoDb.Abstractions;
+using FwksLabs.Libs.Core.Contracts.Common;
 using FwksLabs.Libs.Infra.MongoDb.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,7 @@ public sealed class GetProductsEndpoint : IProductEndpoint
         .MapGet(string.Empty, HandleAsync)
         .MapToApiVersion(1, 0)
         .WithDescription("Retrieve a list of products")
-        .Produces<GetProductsResponse>();
+        .Produces<PagedResponse<GetProductsResponse>>();
 
     public async Task<IResult> HandleAsync(
     [AsParameters] GetProductsRequest request,

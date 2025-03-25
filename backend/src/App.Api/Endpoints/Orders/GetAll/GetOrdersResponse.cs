@@ -21,6 +21,6 @@ public sealed record GetOrdersResponse(
                 x.Id.Encode(), x.CustomerId.Encode(), x.CreationDate.Humanize(), x.PaymentDate.Humanize(), x.Products, x.Total)).ToList();
 
         return AppResponses.Ok(
-            Page<GetOrdersResponse>.From(page.PageNumber, page.PageSize, items.Count, items));
+            PagedResponse<GetOrdersResponse>.From(page.PageNumber, page.PageSize, items.Count, items));
     }
 }

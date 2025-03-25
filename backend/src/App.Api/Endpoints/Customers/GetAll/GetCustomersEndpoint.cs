@@ -16,7 +16,7 @@ public sealed class GetCustomersEndpoint : ICustomerEndpoint
         .MapGet(string.Empty, HandleAsync)
         .MapToApiVersion(1, 0)
         .WithDescription("Retrieve a list of orders")
-        .Produces<Page<GetCustomersResponse>>();
+        .Produces<PagedResponse<GetCustomersResponse>>();
 
     private async Task<IResult> HandleAsync(
         [AsParameters] GetCustomersRequest request,

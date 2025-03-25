@@ -14,7 +14,7 @@ public sealed record GetProductsResponse(string Id, string Name, string Descript
         var items = productsPage.Items.Select(x => new GetProductsResponse(x.Id.Encode(), x.Name, x.Description, x.Price)).ToList();
 
         return AppResponses.Ok(
-            Page<GetProductsResponse>.From(
+            PagedResponse<GetProductsResponse>.From(
                 productsPage.PageNumber, productsPage.PageSize, items.Count, items));
     }
 }

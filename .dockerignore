@@ -1,0 +1,37 @@
+# .NET specific files
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+
+# .NET temporary files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Angular specific files
+node_modules/
+dist/
+out-tsc/
+.angular/
+
+# Angular and .NET build artifacts
+*.log
+npm-debug.log
+*.tsbuildinfo
+*.map
+
+# Git specific files
+.git/
+.gitignore
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files from text editors or IDEs
+*.swp
+*.swo
+*.bak

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FwksLabs.Libs.Core.Contracts.Common;
 
-public sealed record Page<T>
+public sealed record PagedResponse<T>
 {
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
@@ -13,7 +13,7 @@ public sealed record Page<T>
     public bool HasNext => PageNumber < TotalPages;
     public IReadOnlyCollection<T> Items { get; set; } = [];
 
-    public static Page<T> From(int pageNumber, int pageSize, int totalItems, IReadOnlyCollection<T> items) =>
+    public static PagedResponse<T> From(int pageNumber, int pageSize, int totalItems, IReadOnlyCollection<T> items) =>
         new()
         {
             PageNumber = pageNumber,
