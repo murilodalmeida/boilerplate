@@ -1,0 +1,10 @@
+D:\d\standalone-apps\SteamWorkshopDownloader\FwksLabs.Libs.Core.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\FwksLabs.Libs.Core.deps.json
+D:\d\standalone-apps\SteamWorkshopDownloader\FwksLabs.Libs.Core.pdb
+D:\d\standalone-apps\SteamWorkshopDownloader\FluentValidation.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\Humanizer.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\Microsoft.Extensions.Configuration.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\Microsoft.Extensions.DependencyInjection.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\d\standalone-apps\SteamWorkshopDownloader\Microsoft.Extensions.Primitives.dll

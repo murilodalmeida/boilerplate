@@ -1,7 +1,8 @@
 SERVICE_NAME=Boilerplate
+DOCKER_IMAGE=boilerplate:dev
 INFRA_PROJECT=./backend/tools/Migrations/Migrations.csproj
 MIGRATIONS_DIR=History
-CONNECTION_STRING="Host=localhost;Port=5432;Username=local;Password=local;Database=$(SERVICE_NAME);"
+CONNECTION_STRING="Host=159.223.108.214;Port=5432;Username=local;Password=local;Database=$(SERVICE_NAME);"
 
 ## General
 
@@ -13,6 +14,11 @@ format:
 
 build:
 	dotnet build ./backend/$(SERVICE_NAME).sln
+
+## Docker
+
+docker-build:
+	docker build -f docker/apps.backend.dockerfile -t $(DOCKER_IMAGE) ./backend/
 
 ## EF Helpers
 

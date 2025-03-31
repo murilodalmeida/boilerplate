@@ -1,0 +1,13 @@
+D:\git\boilerplate\backend\libs\Libs.Core\bin\clsRelease\net9.0\FwksLabs.Libs.Core.deps.json
+D:\git\boilerplate\backend\libs\Libs.Core\bin\clsRelease\net9.0\FwksLabs.Libs.Core.dll
+D:\git\boilerplate\backend\libs\Libs.Core\bin\clsRelease\net9.0\FwksLabs.Libs.Core.pdb
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\Libs.Core.csproj.AssemblyReference.cache
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\Libs.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\Libs.Core.AssemblyInfoInputs.cache
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\Libs.Core.AssemblyInfo.cs
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\Libs.Core.csproj.CoreCompileInputs.cache
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\Libs.Core.sourcelink.json
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\FwksLabs.Libs.Core.dll
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\refint\FwksLabs.Libs.Core.dll
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\FwksLabs.Libs.Core.pdb
+D:\git\boilerplate\backend\libs\Libs.Core\obj\clsRelease\net9.0\ref\FwksLabs.Libs.Core.dll
