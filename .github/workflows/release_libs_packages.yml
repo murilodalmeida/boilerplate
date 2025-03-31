@@ -15,10 +15,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Define project variables
+        run: |
+          echo "SOLUTION_PATH=apps/libs/Libs.sln" >> $GITHUB_ENV
+          echo "LIBS_PATH=apps/libs/src" >> $GITHUB_ENV
+
       - name: Check changes in libs folder
         id: check_changes
         run: |
-          if git diff --name-only HEAD^ HEAD | grep -q '^apps/libs/src/'; then
+          if git diff --name-only HEAD^ HEAD | grep -q "^${{ env.LIBS_PATH }}/"; then
             echo "CHANGED=true" >> $GITHUB_ENV
           else
             echo "CHANGED=false" >> $GITHUB_ENV
@@ -26,7 +31,7 @@ jobs:
 
       - name: Stop if no relevant changes
         if: env.CHANGED == 'false'
-        run: echo "No changes in /apps/libs/src/. Skipping publish." && exit 0
+        run: echo "No changes in ${{ env.LIBS_PATH }}/. Skipping publish." && exit 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -37,16 +42,16 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/release-}" >> $GITHUB_ENV
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
 
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-build --verbosity normal
 
       - name: Pack NuGet package
-        run: dotnet pack --configuration Release --no-build --output ./nupkgs /p:Version=${{ env.VERSION }}
+        run: dotnet pack ${{ env.SOLUTION_PATH }} --configuration Release --no-build --output ./nupkgs /p:Version=${{ env.VERSION }}
 
       - name: Push NuGet package to GitHub Packages
         run: dotnet nuget push ./nupkgs/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_NUGET_TOKEN }} --skip-duplicate
