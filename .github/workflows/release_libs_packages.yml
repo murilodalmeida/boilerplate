@@ -20,6 +20,22 @@ jobs:
           echo "SOLUTION_PATH=apps/libs/Libs.sln" >> $GITHUB_ENV
           echo "LIBS_PATH=apps/libs/src" >> $GITHUB_ENV
 
+      - name: Extract version from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/release-}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Check if version is a pre-release
+        run: |
+          if [[ "${{ env.VERSION }}" =~ -(test|beta|preview) ]]; then
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+
+      - name: Get commit message for release notes
+        run: echo "RELEASE_BODY=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
       - name: Check changes in libs folder
         id: check_changes
         run: |
@@ -38,9 +54,6 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Extract version from tag
-        run: echo "VERSION=${GITHUB_REF#refs/tags/release-}" >> $GITHUB_ENV
-
       - name: Restore dependencies
         run: dotnet restore ${{ env.SOLUTION_PATH }}
 
@@ -55,3 +68,14 @@ jobs:
 
       - name: Push NuGet package to GitHub Packages
         run: dotnet nuget push ./nupkgs/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_NUGET_TOKEN }} --skip-duplicate
+
+      - name: Create GitHub Release (Only for Final Versions)
+        if: env.IS_PRERELEASE == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ env.VERSION }}"
+          body: "${{ env.RELEASE_BODY }}"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
