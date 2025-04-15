@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FwksLabs.Libs.Infra" Version="1.0.0-rc2" />
+        <PackageReference Include="FwksLabs.Infra" Version="1.0.0-preview2" />
     </ItemGroup>
 
     <ItemGroup>

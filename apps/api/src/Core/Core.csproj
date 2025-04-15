@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FwksLabs.Libs.Core" Version="1.0.0-rc2" />
+      <PackageReference Include="FwksLabs.Core" Version="1.0.0-preview2" />
     </ItemGroup>
 
 </Project>
