@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FwksLabs.Libs.Core" Version="1.0.0-rc2" />
+      <ProjectReference Include="..\..\libs\src\Core\Core.csproj" />
     </ItemGroup>
 
 </Project>

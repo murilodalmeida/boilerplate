@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>$endpoint$Endpoint</Title>
+      <Shortcut>fqe</Shortcut>
+      <Description>Generic endpoint template with validation and CQRS.</Description>
+      <Author>You</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>endpoint</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>Sample</Default>
+        </Literal>
+        <Literal>
+          <ID>description</ID>
+          <ToolTip>Description of the endpoint</ToolTip>
+          <Default>Creates a resource.</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route for the endpoint</ToolTip>
+          <Default>string.Empty</Default>
+        </Literal>
+        <Literal>
+          <ID>resultType</ID>
+          <ToolTip>Result type (e.g. CreateCustomerResult)</ToolTip>
+          <Default>SampleResult</Default>
+        </Literal>
+        <Literal>
+          <ID>requestType</ID>
+          <ToolTip>Request type (e.g. CreateCustomerRequest)</ToolTip>
+          <Default>SampleRequest</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[
+public sealed class $endpoint$Endpoint : IEndpoint
+{
+    public void Map(IEndpointRouteBuilder builder) => builder
+        .MapPost($route$, HandleAsync)
+        .MapToApiVersion(1, 0)
+        .Produces<$resultType$>()
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithName("$endpoint$")
+        .WithDescription("$description$");
+
+    private async Task<IResult> HandleAsync(
+        $requestType$ request,
+        IValidator<$requestType$> validator,
+        ICommandHandler<$endpoint$Command, $resultType$> handler,
+        CancellationToken cancellationToken)
+    {
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return AppResponses.ValidationError(validationResult);
+
+        var result = await handler.HandleAsync(request.ToCommand(), cancellationToken);
+
+        if (!result.IsValid)
+            return AppResponses.ValidationError(result.ValidationResult!);
+
+        return TypedResults.Ok(result.Data!);
+    }
+}
+
+public sealed record $requestType$()
+{
+    public $endpoint$Command ToCommand() => new();
+}
+
+public sealed record $resultType$
+{
+    public static $resultType$ From($endpoint$Command _) => new();
+}
+
+public sealed class $requestType$Validator : AbstractValidator<$requestType$>
+{
+    public $requestType$Validator()
+    {
+        // Add rules
+    }
+}
+
+public sealed record $endpoint$Command();
+
+public sealed class $endpoint$CommandValidator : AbstractValidator<$endpoint$Command>
+{
+    public $endpoint$CommandValidator()
+    {
+        // Add rules
+    }
+}
+
+public sealed class $endpoint$CommandHandler(
+    IValidator<$endpoint$Command> validator)
+    : ICommandHandler<$endpoint$Command, $resultType$>
+{
+    public async Task<Result<$resultType$>> HandleAsync($endpoint$Command command, CancellationToken cancellation)
+    {
+        var validationResult = await validator.ValidateAsync(command, cancellation);
+
+        if (!validationResult.IsValid)
+            return new(validationResult);
+
+        return new(new $resultType$());
+    }
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

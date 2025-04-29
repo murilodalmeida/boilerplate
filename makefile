@@ -7,7 +7,7 @@ CONNECTION_STRING="Host=159.223.108.214;Port=5432;Username=local;Password=local;
 ## General
 
 vs:
-	/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/devenv.exe ./backend/$(SERVICE_NAME).sln &
+	/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/devenv.exe ./apps/api/$(SERVICE_NAME).sln &
 
 format:
 	dotnet format ./backend/$(SERVICE_NAME).sln

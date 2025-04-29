@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using FwksLabs.Boilerplate.Application.Abstractions;
+using FwksLabs.Boilerplate.Application.Features;
 using FwksLabs.Boilerplate.Core.Abstractions;
 using FwksLabs.Boilerplate.Core.Settings;
 using FwksLabs.Boilerplate.Infra;
@@ -52,6 +54,7 @@ try
         .AddHttpClient()
         .AddHttpContextAccessor()
         .AddExceptionHandlerService()
+        .AddApplicationDependencies()
         .AddInfraDependencies(appSettings);
 
     var app = builder.Build();
@@ -130,7 +133,8 @@ try
 
         builder.Services
             .AddValidatorsFromAssembly(typeof(Program).Assembly)
-            .AddValidatorsFromAssembly(typeof(ICore).Assembly);
+            .AddValidatorsFromAssembly(typeof(ICore).Assembly)
+            .AddValidatorsFromAssembly(typeof(IApplication).Assembly);
     }
 
     void ConfigureObservability()

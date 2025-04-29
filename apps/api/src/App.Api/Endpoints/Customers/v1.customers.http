@@ -8,14 +8,10 @@ X-Correlation-Id: {{correlationId}}
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "phoneNumber": "+1123456789",
-  "email": "john@doe.com"
+  "name": "John Doe #3",
+  "phoneNumber": "+9876543210",
+  "email": "doe@john.com"
 }
-
-### Get Customer by Id
-GET {{baseUrl}}/{{id}} HTTP/1.1
-X-Correlation-Id: {{correlationId}}
 
 ### Get All Customers
 GET {{baseUrl}}?pageSize=-1 HTTP/1.1
